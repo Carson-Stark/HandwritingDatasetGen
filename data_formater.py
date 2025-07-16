@@ -71,14 +71,6 @@ def get_lines():
     err_file.close()
 
 
-def rename():
-    forms = sorted_alphanumeric(os.listdir(strokes_dir))[76:]
-    for form in forms:
-        for line in sorted_alphanumeric(os.listdir(os.path.join(strokes_dir, form))):
-            if "-strokes" not in line:
-                os.remove(os.path.join(strokes_dir, form, line))
-
-
 def get_strokes():
     form_count = 1
     line_count = 0
@@ -112,8 +104,6 @@ def get_strokes():
         form_count += 1
     err_file.close()
 
-
-# rename()
 # rename_forms()
-get_strokes()
+# get_strokes()
 # get_lines()

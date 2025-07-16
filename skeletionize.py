@@ -497,7 +497,7 @@ def thin(image, line_height):
                              cv2.MORPH_HITMISS, k)
         skel = np.array(255 - (255 - skel + c), np.uint8)
 
-    Image.fromarray((255-skel).astype("uint8"), "L").show()
+    #Image.fromarray((255-skel).astype("uint8"), "L").show()
 
     """sk = np.array(skel)
     for r in range(1, skel.shape[0]-1):
@@ -560,6 +560,9 @@ def thin(image, line_height):
         for c in range(skel.shape[1]):
             if (skel[r, c] == (255, 0, 0)).all():
                 endpoints.append((r, c))"""
+
+    skel_img = cv2.cvtColor(skel, cv2.COLOR_GRAY2RGB)
+    Image.fromarray(skel_img.astype("uint8"), "RGB").show()
 
     shapes = list()
     visited = np.zeros((skel.shape[0], skel.shape[1]))
@@ -850,8 +853,7 @@ def thin(image, line_height):
                                 display[p[0], p[1]] = (0, 255, 255)
                             display[current_vertex[0][0][0],
                                     current_vertex[0][0][1]] = (255, 0, 0)
-                            Image.fromarray(display.astype(
-                               "uint8"), "RGB").show()
+                            #Image.fromarray(display.astype("uint8"), "RGB").show()
                 else:
                     # line
                     loop = False
@@ -963,7 +965,7 @@ def thin(image, line_height):
             v[0] = (round(totaly / len(v[0])), round(totalx / len(v[0])))
             v[2] = 0
 
-    Image.fromarray(verts.astype("uint8"), "RGB").show()
+    #Image.fromarray(verts.astype("uint8"), "RGB").show()
 
     for s in shapes:
         for l in s[2]:
@@ -995,7 +997,7 @@ def thin(image, line_height):
                     verts[p[0], p[1]] = (255, 0, 0) if len(
                         l[1]) > 1 else (0, 0, 255)
 
-    Image.fromarray(verts.astype("uint8"), "RGB").show()
+    #Image.fromarray(verts.astype("uint8"), "RGB").show()
 
     paths = list()
     skel = cv2.cvtColor(skel, cv2.COLOR_GRAY2RGB)
@@ -1046,7 +1048,7 @@ def thin(image, line_height):
                 for p in path:
                     path_im[p[0], p[1]] = (0, 0, 255)
                 path_im[current[0][0], current[0][1]] = (255, 0, 0)
-                Image.fromarray(path_im.astype("uint8"), "RGB").show()
+                #Image.fromarray(path_im.astype("uint8"), "RGB").show()
             # time.sleep(1)
             path.append(current[0])
             current[2] += 1
@@ -1262,12 +1264,12 @@ def thin(image, line_height):
     delta = 1000 / skel.shape[1]
     for path in paths:
         for i in range(len(path)):
-            """if all(path_im[path[i][0], path[i][1]]) == 0:
+            if all(path_im[path[i][0], path[i][1]]) == 0:
                 path_im[path[i][0], path[i][1]] = (0, 0, 255)
             elif any(path_im[path[i][0], path[i][1]]) == 0:
                 path_im[path[i][0], path[i][1]] = (255, 0, 0)
             else:
-                path_im[path[i][0], path[i][1]] = (0, 0, 0)"""
+                path_im[path[i][0], path[i][1]] = (0, 0, 0)
             if i > 0 and i < len(path)-1:
                 smooth = getSmoothness(
                     path[: i], path[i], path[i:], 10) / average_smoothness
@@ -2118,7 +2120,8 @@ def run_on_line(form, line, pencil=False):
     #global canvas
     image = Image.open(
         "CustomHandwritingDataset/Lines/form{}/form{}-line{}.jpg".format(form, form, line)).convert("L")
-    extract_strokes(image, pencil)
+    # setting blur = True will have detremental effects on pen handwriting because it closes small holes, only use for pencil
+    strokes = extract_strokes(image, pencil)
 
 
 def extract_strokes(image, blur=False, cursive=False):
@@ -2142,8 +2145,8 @@ def extract_strokes(image, blur=False, cursive=False):
     image = remove_holes(image)
     if not cursive:
         image = seperate_letters(image)
-    return thin(image, line_height)
-
+    strokes = thin(image, line_height)
+    return strokes
 
 
 def draw_line(x1, y1, x2, y2):
@@ -2152,11 +2155,12 @@ def draw_line(x1, y1, x2, y2):
 
 
 if __name__ == "__main__":
+    # can be used to visualize the lines as they are traced
     """window = tk.Tk()
     canvas = tk.Canvas(window, width=1000, height=300)
     canvas.pack()
     window.after(2000, run_on_line(72, 12, True))
     window.mainloop()"""
 
-    run_on_line(72, 12, True)
+    run_on_line(1, 4, False)
 
