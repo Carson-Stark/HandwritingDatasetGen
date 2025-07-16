@@ -64,7 +64,7 @@ Root Directory
 
 ### Workflow
 
-1. **Gather Forms**
+1. **Gather Forms**  
    Add images of individual pages of your handwriting into `Forms/`. Must be JPG format, cropped closely to page, and straight on perspective. No further processing required.
 
 3. **Rename Forms**  

@@ -4,5 +4,5 @@ __pycache__/
 *.pyc
 venv/
 
-# CustomHandwritingDataset folder contains user data and is excluded from the repository due to size and privacy
-CustomHandwritingDataset/
+# CustomHandwritingDataset folder should normally be excluded from the repository due to size and privacy
+# CustomHandwritingDataset/
