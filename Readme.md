@@ -21,6 +21,19 @@ The generated dataset can be used for handwriting analysis, recognition, or gene
 - **Date Started**: August 2019  
 - **Date Completed**: May 2020
 
+## Example Results
+
+### Word / Line Partition
+
+<img width="1920" height="1080" alt="word_segmentation" src="https://github.com/user-attachments/assets/81898c28-5ba5-40db-9198-5f5bce7be594" />
+
+### Stroke Extraction
+
+![stroke_extraction](https://github.com/user-attachments/assets/d3cdd34f-2611-4b4e-b76d-57048e7881fc)
+
+### Handwriting Synthesis Training
+
+![Comparison](https://github.com/user-attachments/assets/4366e724-1947-4369-bf89-a962a4ec1507)
 
 ## Installation
 
@@ -75,6 +88,9 @@ Root Directory
 
 5. **Extract Strokes**  
    Use `data_formater.py` extractStrokes() function to convert each line image into pen-stroke sequences and save into `CustomHandwritingDataset/Strokes/` Use `test_points.py` to preview the extracted (x, y, pen-state) sequences.
+
+6. **Train Model**  
+   Train a handwriting synthesis or other model using this dataset. I used [this repo](https://github.com/sjvasquez/handwriting-synthesis) to get the results above. Ensure you convert the strokes data into the expected format if needed.
 
 ## Project Structure
 
