@@ -137,8 +137,7 @@ The segmentation process is based on the method described in *A New Scheme for U
 
 ### 2. Pen-Stroke Extraction (Skeletonization)
 
-Stroke extraction is based on *Recovery of Drawing Order From Single-Stroke Handwriting Images* by Kimura et al.  
-[IEEE Link](https://ieeexplore.ieee.org/document/877517)
+The exact references originally used for my stroke extraction implementation have been lost, but the method is most likely based on or inspired by *Recovery of Drawing Order from Single-Stroke Handwriting Images* ([IEEE link](https://ieeexplore.ieee.org/document/877517)) and *Recovery of Drawing Order from Scanned Images of Multi-Stroke Handwriting* ([ICDAR 1999 link](https://ieeexplore.ieee.org/document/791825)) by Yoshiharu Kato and Makoto Yasuhara.
 
 #### Core steps:
 
