@@ -141,14 +141,20 @@ The exact references originally used for my stroke extraction implementation hav
 
 #### Core steps:
 
-- **Skeletonization**  
-  Apply morphological thinning to reduce the handwriting to a 1-pixel-wide skeleton.
+- **Thinning**  
+Reduce the text to a 1-pixel-wide skeleton using morphological thinning (OpenCV’s `cv2.ximgproc.thinning`), followed by a clean-up step that ensures all connections are 4-connected (no diagonal gaps).
 
 - **Graph Construction**  
-  Model the skeleton as a graph where nodes represent junctions and endpoints, and edges represent line segments.
+Model the skeleton as a graph where nodes are endpoints (degree 1) and junctions (degree > 2). Each segment between nodes becomes an edge, storing the sequence of points in order. Loops and double-traced paths are detected and marked for special handling.
+
+- **Odd-Degree Pairing & Pen-Up Inference**  
+For all odd-degree nodes, the algorithm pairs them by minimizing curvature. If a pair belongs to the same stroke, the path is retraced; if they belong to different strokes, a virtual "pen-up bridge" is added to indicate a pen lift.
 
 - **Stroke Path Reconstruction**  
-  Traverse the graph to produce ordered stroke sequences approximating pen motion, with inferred pen-up/pen-down states.
+Traverse the graph using a greedy smoothness-based heuristic. At each junction, select the next edge by minimizing local curvature, approximated via chord deviation. Loops and double traces are handled with backtracking when necessary.
+
+- **Multi-Stroke Handling**  
+Whenever a pen-up bridge is crossed or a component is exhausted, the algorithm restarts from the next unvisited endpoint, effectively handling multi-stroke characters or disconnected components.
 
 - **Sequence Formatting**  
-  Output each stroke as a sequence of (x, y, pen-state) tuples ready for input to handwriting models.
+Convert the path list into (x, y, pen-state) tuples where the pen-state encodes pen-down, pen-up, or end-of-sequence markers. Points are resampled to keep uniform spacing, matching the input format required by handwriting generation models such as MDN-RNNs.
