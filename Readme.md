@@ -1,5 +1,7 @@
 # Online Handwriting Dataset Generation Pipeline
 
+![linesegmentation_cropped](https://github.com/user-attachments/assets/f627ba7e-3d0d-4c8f-9448-d78631689b88)
+
 ## Project Overview
 
 This project provides a complete pipeline to convert offline handwritten forms (scanned bitmap images) into online handwriting data—sequences of (x, y, pen-state) points. The pipeline includes automated text-line and word segmentation, skeleton-based stroke extraction, and dataset formatting for machine learning applications. 
@@ -48,7 +50,7 @@ Root Directory
 │   ├── Transcriptions/ # Text transcriptions per form
 ```
 
-> **Note**: `CustomHandwritingDataset/` is excluded from the repository due to privacy and size constraints. You must supply your own data.
+> **Note**: `CustomHandwritingDataset/` contains sample data for a single form. The rest of the dataset is excluded for privacy reasons. You must supply your own data.
 
 ### Required Input Data:
 
@@ -62,17 +64,17 @@ Root Directory
 
 ### Workflow
 
-1. **Format Data**  
-   Run `data_formater.py` to generate text lines and strokes from `Forms/`.
+1. **Gather Forms**
+   Add images of individual pages of your handwriting into `Forms/`. Must be JPG format, cropped closely to page, and straight on perspective. No further processing required.
 
-2. **Segment Text**  
-   Run `textSegmentation.py` to perform automatic line and word segmentation.
+3. **Rename Forms**  
+   Use `data_formater.py` to rename forms as `form1.jpg`, `form2.jpg`, etc.
 
-3. **Extract Strokes**  
-   Run `skeletionize.py` to convert each line image into pen-stroke sequences.
+4. **Segment Lines**  
+   Use `data_formater.py` segmentLines() function to perform automatic line segmentation on the forms and save into `CustomHandwritingDataset/Lines/`. `textSegmentation.py` can also segment into words depending on configuration.
 
-4. **Visualize Data**  
-   Run `test_points.py` to preview the extracted (x, y, pen-state) sequences.
+5. **Extract Strokes**  
+   Use `data_formater.py` extractStrokes() function to convert each line image into pen-stroke sequences and save into `CustomHandwritingDataset/Strokes/` Use `test_points.py` to preview the extracted (x, y, pen-state) sequences.
 
 ## Project Structure
 
